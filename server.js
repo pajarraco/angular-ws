@@ -1,10 +1,11 @@
-var server = require('http').createServer()
-    , url = require('url')
-    , WebSocketServer = require('ws').Server
-    , wss = new WebSocketServer({ server: server })
-    , express = require('express')
-    , app = express()
-    , port = 4080;
+var server = require('http').createServer(),
+    url = require('url'),
+    WebSocketServer = require('ws').Server,
+    wss = new WebSocketServer({ server: server }),
+    express = require('express'),
+    app = express(),
+    fs = require('fs');
+port = 4080;
 
 app.use(function(req, res) {
     res.send({ msg: "hello" });
@@ -20,14 +21,20 @@ wss.on('connection', function connection(ws) {
         var m = JSON.parse(message);
         console.log('callback_id', m.callback_id);
         var i = 0;
-        while (i < 10) {
-            setTimeout(function() {
-                ws.send(JSON.stringify({
-                    callback_id: m.callback_id,
-                    text: 'this is msg ' + i
-                }));
-                
-            }, 3000);
+        while (i < 1) {
+            // ws.send(JSON.stringify({
+            //     callback_id: m.callback_id,
+            //     text: 'this is msg ' + i
+            // }));
+            var file = 'file.jpg';
+            var filestream = fs.createReadStream(file);
+            var myFile;
+            filestream.on('data', function(data) {
+                myFile = data;
+            })
+            .on('end', function(){
+                ws.send(myFile);
+            })
             i++;
         }
     });

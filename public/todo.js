@@ -1,5 +1,5 @@
 angular.module('todoApp', [])
-    .factory('MyService', ['$q', '$rootScope', function($q, $rootScope) {
+    .factory('MyService', ['$q', '$rootScope', '$sce', function($q, $rootScope, $sce) {
 
         // We return this object to anything injecting our service
         var Service = {};
@@ -20,7 +20,7 @@ angular.module('todoApp', [])
         function onMessage() {
             _ws.onmessage = function(message) {
                 // console.log('onMessage', message);
-                listener(JSON.parse(message.data));
+                listener(message.data);
             };
         }
 
@@ -30,9 +30,17 @@ angular.module('todoApp', [])
         }
 
         function listener(data) {
-            // console.log('data', data);
+            console.log('data', data);
             var messageObj = data;
             console.log("Received data from websocket: ", messageObj);
+            // var urlCreator = window.URL || window.webkitURL || window.mozURL || window.msURL;
+                
+            // var blob = new Blob([messageObj], { type: 'image/jpg' });
+            // var fileURL = URL.createObjectURL(file);
+            // var saveBlob = navigator.webkitSaveBlob || navigator.mozSaveBlob || navigator.saveBlob;
+            // url = urlCreator.createObjectURL(blob);
+            // window.location = url;
+
             if (messageObj.text) {
                 _callback(messageObj);
             }
@@ -51,10 +59,8 @@ angular.module('todoApp', [])
         }
         return Service;
     }])
-    .controller('TodoListController', ['$scope', 'MyService', function($scope, MyService) {
+    .controller('TodoListController', ['$scope', '$sce', 'MyService', function($scope, $sce, MyService) {
         var todoList = $scope.todoList = this;
-
-
         todoList.todos = [
             { text: 'learn angular', done: true },
             { text: 'build an angular app', done: false }];
@@ -62,6 +68,8 @@ angular.module('todoApp', [])
         todoList.addTodo = function() {
             MyService.getCustomers(function(data) {
                 console.log('getCustomers', data);
+
+                $scope.content = data;
                 todoList.todos.push({ text: data.text, done: false });
                 todoList.todoText = '';
                 $scope.$apply(function() {
