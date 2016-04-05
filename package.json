@@ -1,0 +1,22 @@
+{
+  "name": "angular-websocket",
+  "version": "0.1.0",
+  "description": "Websocket with Angular",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://pajarraco@github.com/pajarraco/angular-ws.git"
+  },
+  "author": "Ernesto La Fontaine",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/pajarraco/angular-ws/issues"
+  },
+  "homepage": "https://github.com/pajarraco/angular-ws#readme",
+  "devDependencies": {
+    "angular": "^1.5.3"
+  }
+}
