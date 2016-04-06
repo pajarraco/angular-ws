@@ -6,6 +6,7 @@ angular.module('todoApp', [])
         // callback function 
         var _callback = function() { };
         var _ws;
+        
 
         function openConn() {
             var defer = $q.defer();
