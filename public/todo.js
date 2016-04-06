@@ -19,7 +19,7 @@ angular.module('todoApp', [])
 
         function onMessage() {
             _ws.onmessage = function(message) {
-                // console.log('onMessage', message);
+                console.log('onMessage', message);
                 listener(message.data);
             };
         }
@@ -33,13 +33,18 @@ angular.module('todoApp', [])
             console.log('data', data);
             var messageObj = data;
             console.log("Received data from websocket: ", messageObj);
-            // var urlCreator = window.URL || window.webkitURL || window.mozURL || window.msURL;
-                
-            // var blob = new Blob([messageObj], { type: 'image/jpg' });
-            // var fileURL = URL.createObjectURL(file);
-            // var saveBlob = navigator.webkitSaveBlob || navigator.mozSaveBlob || navigator.saveBlob;
-            // url = urlCreator.createObjectURL(blob);
+            var urlCreator = window.URL || window.webkitURL || window.mozURL || window.msURL;
+
+            var blob = new Blob([messageObj], { type: 'image/jpg' });
+            url = urlCreator.createObjectURL(blob);
             // window.location = url;
+            // window.location.href = url;
+            var a = document.createElement("a");
+            document.body.appendChild(a);
+            a.style = "display: none";
+            a.href = url;
+            a.download = 'test.jpg';
+            a.click();
 
             if (messageObj.text) {
                 _callback(messageObj);
